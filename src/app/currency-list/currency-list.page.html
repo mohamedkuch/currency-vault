@@ -15,6 +15,7 @@
     <ion-item
       *ngFor="let currency of currencies$ | async"
       class="ion-activatable ripple-parent"
+      (click)="selectCurrency(currency)"
     >
       <ion-ripple-effect></ion-ripple-effect>
       <div class="currency-wrapper">

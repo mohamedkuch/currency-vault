@@ -67,6 +67,22 @@ export class MainService {
     });
   }
 
+  setTopCurrency(currency: Currency): void {
+    this.selectedTopCurrencySource.next(currency);
+  }
+
+  getTopCurrency(): Currency | undefined {
+    return this.selectedTopCurrencySource.getValue();
+  }
+
+  getBottomCurrency(): Currency | undefined {
+    return this.selectedBottomCurrencySource.getValue();
+  }
+
+  setBottomCurrency(currency: Currency): void {
+    this.selectedBottomCurrencySource.next(currency);
+  }
+
   private setSelectedCurrencies(currencyData: Currency[]): void {
     this.selectedTopCurrencySource.next(
       currencyData.find((c) => c.short_code === 'USD')
