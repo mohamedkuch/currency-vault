@@ -1,0 +1,30 @@
+<div class="main-bottom">
+  <div class="main-bottom-icon-wrapper">
+    <div
+      class="main-bottom-icon main-bottom-icon-switch ion-activatable ripple-parent"
+    >
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-icon slot="start" name="repeat-outline"></ion-icon>
+      <div>Switch</div>
+    </div>
+    <div
+      class="main-bottom-icon main-bottom-icon-danger ion-activatable ripple-parent"
+    >
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-icon slot="start" color="danger" name="trash-outline"></ion-icon>
+      <div>Clear</div>
+    </div>
+  </div>
+  <div class="main-bottom-grid">
+    <div
+      *ngFor="let item of buttons"
+      class="main-bottom-button-wrapper ion-activatable ripple-parent"
+    >
+      <ion-ripple-effect></ion-ripple-effect>
+      <div *ngIf="item !== 'delete'">{{ item }}</div>
+      <div *ngIf="item === 'delete'">
+        <ion-icon name="backspace-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+</div>

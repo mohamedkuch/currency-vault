@@ -1,0 +1,40 @@
+.main {
+  &-top {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-direction: column;
+    position: relative;
+    background-color: var(--ion-card-background);
+  }
+
+  &-card {
+    &-top,
+    &-bottom {
+      padding: 2.5rem 1rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    &-curr-flag-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    &-input {
+      flex: 1;
+      word-break: break-all;
+      font-size: 2rem;
+      line-height: 2rem;
+      height: 4rem;
+      display: flex;
+      text-align: right;
+      align-items: center;
+      justify-content: end;
+    }
+  }
+}

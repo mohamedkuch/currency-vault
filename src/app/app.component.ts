@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MainService } from './main.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private mainService: MainService) {
+    this.mainService.fetchData(() => {});
+  }
 }
