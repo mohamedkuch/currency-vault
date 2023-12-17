@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Currencies</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar class="custom"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item
+      *ngFor="let currency of currencies$ | async"
+      class="ion-activatable ripple-parent"
+    >
+      <ion-ripple-effect></ion-ripple-effect>
+      <div class="currency-wrapper">
+        <div class="currency-flag" *ngIf="currency.flags.length > 0">
+          <img
+            alt=""
+            style="width: 1.4rem; height: 1.4rem"
+            [src]="currency.flags[0].flag_url"
+          />
+        </div>
+        <div class="currency-name">{{currency.name}}</div>
+        <div class="currency-code">{{currency.short_code}}</div>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

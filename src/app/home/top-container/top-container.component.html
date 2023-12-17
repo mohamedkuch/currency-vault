@@ -2,25 +2,34 @@
   <div
     class="ion-activatable ripple-parent main-card-top"
     *ngIf="selectedTopCurrency$ | async as selectedTopCurrency"
+    [routerDirection]="'root'"
+    [routerLink]="['/currencies']"
   >
     <div class="main-card-curr-flag-wrapper">
       <div>
         {{ selectedTopCurrency.short_code }}
       </div>
       <div>
-        <!-- <ion-img
+        <ion-img
+          *ngIf="selectedTopCurrency.flags.length > 0"
           style="width: 2rem; height: 2rem"
-          [src]="selectedTopCurrency.flag?.flag_url"
+          [src]="selectedTopCurrency.flags[0].flag_url"
         >
-        </ion-img> -->
+        </ion-img>
       </div>
     </div>
     <ion-ripple-effect></ion-ripple-effect>
-    <div class="main-card-input">123123123123123123123123123123</div>
+    <div class="main-card-input">
+      <div class="main-card-input-text">
+        1231231231asdasdasdasdasdasd23123123123123123123
+      </div>
+    </div>
   </div>
 
   <div
     class="ion-activatable ripple-parent main-card-bottom"
+    [routerDirection]="'root'"
+    [routerLink]="['/currencies']"
     *ngIf="selectedBottomCurrency$ | async as selectedBottomCurrency"
   >
     <div class="main-card-curr-flag-wrapper">
@@ -28,14 +37,16 @@
         {{ selectedBottomCurrency.short_code }}
       </div>
       <div>
-        <!-- <ion-img
+        <ion-img
+          *ngIf="selectedBottomCurrency.flags.length > 0"
           style="width: 2rem; height: 2rem"
-          [src]="selectedBottomCurrency.flag?.flag_url"
-        >
-        </ion-img> -->
+          [src]="selectedBottomCurrency.flags[0].flag_url"
+        ></ion-img>
       </div>
     </div>
     <ion-ripple-effect></ion-ripple-effect>
-    <div class="main-card-input">123123</div>
+    <div class="main-card-input">
+      <div class="main-card-input-text">123123</div>
+    </div>
   </div>
 </div>
