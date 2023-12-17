@@ -12,8 +12,15 @@ import { MainService } from 'src/app/main.service';
 export class TopContainerComponent {
   selectedBottomCurrency$ = new Observable<Currency | undefined>();
   selectedTopCurrency$ = new Observable<Currency | undefined>();
+
+  selectedTopValue$ = new Observable<number>();
+  selectedBottomValue$ = new Observable<number>();
+
   constructor(private mainService: MainService) {
     this.selectedTopCurrency$ = this.mainService.selectedTopCurrency$;
     this.selectedBottomCurrency$ = this.mainService.selectedBottomCurrency$;
+
+    this.selectedTopValue$ = this.mainService.selectedTopValue$;
+    this.selectedBottomValue$ = this.mainService.selectedBottomValue$;
   }
 }

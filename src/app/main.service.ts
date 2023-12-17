@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, forkJoin, map } from 'rxjs';
 import { Currency } from './currency';
 import { CurrencyFlag, Flag } from './flag';
+import { CurrencyRates } from './currencyRate';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,11 @@ export class MainService {
   private flagsURL = 'https://restcountries.com/v3.1/all';
   private currencybeaconURL = 'https://api.currencybeacon.com/v1/';
   private API_KEY = 'tNCfFyrM0vdAGMZHrE33yTFmSXuWfPRz';
+
+  private currencyRateSource = new BehaviorSubject<CurrencyRates | undefined>(
+    undefined
+  );
+  readonly currencyRate$ = this.currencyRateSource.asObservable();
 
   private currenciesSource = new BehaviorSubject<Currency[]>([]);
   readonly currencies$ = this.currenciesSource.asObservable();
@@ -24,6 +30,12 @@ export class MainService {
   readonly selectedTopCurrency$ = this.selectedTopCurrencySource.asObservable();
   readonly selectedBottomCurrency$ =
     this.selectedBottomCurrencySource.asObservable();
+
+  private selectedTopValue = new BehaviorSubject<number>(1);
+  private selectedBottomValue = new BehaviorSubject<number>(0);
+
+  readonly selectedTopValue$ = this.selectedTopValue.asObservable();
+  readonly selectedBottomValue$ = this.selectedBottomValue.asObservable();
 
   public priorityCountries = {
     USD: 'US', // United States for US Dollar
@@ -41,9 +53,11 @@ export class MainService {
   fetchData(onComplete: () => void): void {
     const currencyRequest = this.fetchCurrency();
     const flagsRequest = this.fetchFlags();
+    const rateRequest = this.fetchRate();
 
-    forkJoin([currencyRequest, flagsRequest]).subscribe({
-      next: ([currencyData, flagsData]) => {
+    forkJoin([currencyRequest, flagsRequest, rateRequest]).subscribe({
+      next: ([currencyData, flagsData, rateData]) => {
+        this.currencyRateSource.next(rateData);
         let final_Currency = this.processData(currencyData, flagsData);
         this.currenciesSource.next(final_Currency);
         this.setSelectedCurrencies(final_Currency);
@@ -65,6 +79,11 @@ export class MainService {
       final.flags = flagsArray;
       return final;
     });
+  }
+
+  resetValues(): void {
+    this.selectedTopValue.next(0);
+    this.selectedBottomValue.next(0);
   }
 
   setTopCurrency(currency: Currency): void {
@@ -89,6 +108,35 @@ export class MainService {
     );
     this.selectedBottomCurrencySource.next(
       currencyData.find((c) => c.short_code === 'EUR')
+    );
+  }
+
+  calculateBottomValue() {
+    const currentTopCurrency = this.selectedTopCurrencySource.getValue();
+    const currentBottomCurrency = this.selectedBottomCurrencySource.getValue();
+    const currentTopValue = this.selectedTopValue.getValue();
+    const currentBottomValue = this.selectedBottomValue.getValue();
+
+    if (currentBottomCurrency && currentTopCurrency) {
+    }
+  }
+
+  fetchRate(): Observable<CurrencyRates> {
+    const url = `${this.currencybeaconURL}latest?api_key=${this.API_KEY}`;
+    return this.http.get<any>(url).pipe(
+      map((response) => {
+        const rates = Object.entries(response.response.rates).map(
+          ([code, rate]) => ({
+            code,
+            rate: Number(rate),
+          })
+        );
+        return {
+          date: response.response.date,
+          base: response.response.base,
+          rates: rates,
+        };
+      })
     );
   }
 

@@ -22,4 +22,8 @@ export class BottomContainerComponent {
     this.mainService.setTopCurrency(currentBottomSelected);
     this.mainService.setBottomCurrency(currentTopSelected);
   }
+
+  onResetClick() {
+    this.mainService.resetValues();
+  }
 }

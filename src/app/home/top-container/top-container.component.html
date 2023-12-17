@@ -22,7 +22,7 @@
     <ion-ripple-effect></ion-ripple-effect>
     <div class="main-card-input">
       <div class="main-card-input-text">
-        1231231231asdasdasdasdasdasd23123123123123123123
+        {{ selectedTopValue$ | async }}
       </div>
     </div>
   </div>
@@ -50,7 +50,9 @@
     </div>
     <ion-ripple-effect></ion-ripple-effect>
     <div class="main-card-input">
-      <div class="main-card-input-text">123123</div>
+      <div class="main-card-input-text">
+        {{ selectedBottomValue$ | async }}
+      </div>
     </div>
   </div>
 </div>
