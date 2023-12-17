@@ -7,13 +7,13 @@
     [queryParams]="{ selected: 'top' }"
   >
     <div class="main-card-curr-flag-wrapper">
-      <div>
-        {{ selectedTopCurrency.short_code }}
+      <div style="font-weight: 600; letter-spacing: 1px">
+        {{ selectedTopCurrency.short_code }}({{ selectedTopCurrency.symbol }})
       </div>
       <div>
         <ion-img
           *ngIf="selectedTopCurrency.flags.length > 0"
-          style="width: 2rem; height: 2rem"
+          style="width: 1.5rem; height: 1.5rem"
           [src]="selectedTopCurrency.flags[0].flag_url"
         >
         </ion-img>
@@ -35,13 +35,15 @@
     *ngIf="selectedBottomCurrency$ | async as selectedBottomCurrency"
   >
     <div class="main-card-curr-flag-wrapper">
-      <div>
-        {{ selectedBottomCurrency.short_code }}
+      <div style="font-weight: 600; letter-spacing: 1px">
+        {{ selectedBottomCurrency.short_code }}({{
+          selectedBottomCurrency.symbol
+        }})
       </div>
       <div>
         <ion-img
           *ngIf="selectedBottomCurrency.flags.length > 0"
-          style="width: 2rem; height: 2rem"
+          style="width: 1.5rem; height: 1.5rem"
           [src]="selectedBottomCurrency.flags[0].flag_url"
         ></ion-img>
       </div>

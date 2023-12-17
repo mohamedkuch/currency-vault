@@ -137,7 +137,8 @@ export class MainService {
                 currencyData['code'],
                 currencyData['name'],
                 currencyData['short_code'],
-                []
+                [],
+                currencyData['symbol']
               );
             });
             return currencies;

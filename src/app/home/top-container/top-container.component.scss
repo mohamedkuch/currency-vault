@@ -14,22 +14,27 @@
     }
     &-top,
     &-bottom {
-      padding: 2.5rem 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      padding-top: 4rem;
+      padding-bottom: 2rem;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     &-curr-flag-wrapper {
+      position: absolute;
+      top: 5px;
+      left: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.8rem;
+      gap: 0.4rem;
       border: 1px solid var(--ion-color-step-100);
       background-color: var(--ion-color-step-200);
-
-      padding: 0.3rem 0.5rem;
-      border-radius: 0.5rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 1rem;
     }
 
     &-input {
@@ -43,7 +48,7 @@
 
       &-text {
         word-break: break-all;
-        font-size: 1.6rem;
+        font-size: 1.8rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
