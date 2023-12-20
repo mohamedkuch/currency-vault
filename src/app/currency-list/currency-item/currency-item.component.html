@@ -1,0 +1,14 @@
+<ion-item class="ion-activatable ripple-parent">
+  <ion-ripple-effect></ion-ripple-effect>
+  <div class="currency-wrapper">
+    <div class="currency-flag" *ngIf="currency.flags.length > 0">
+      <img
+        alt=""
+        style="width: 2rem; height: 1.4rem"
+        [src]="currency.flags[0].flag_url"
+      />
+    </div>
+    <div class="currency-name">{{ currency.name }}</div>
+    <div class="currency-code">{{ currency.short_code }}</div>
+  </div>
+</ion-item>

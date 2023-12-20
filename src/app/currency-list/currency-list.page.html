@@ -6,29 +6,30 @@
     <ion-title>Currencies</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar class="custom"></ion-searchbar>
+    <ion-searchbar
+      (ionInput)="handleSearch($event)"
+      [(ngModel)]="searchTerm"
+      class="custom"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-item
+  <ion-list *ngIf="searchTerm <= ''">
+    <div
       *ngFor="let currency of currencies$ | async"
-      class="ion-activatable ripple-parent"
       (click)="selectCurrency(currency)"
     >
-      <ion-ripple-effect></ion-ripple-effect>
-      <div class="currency-wrapper">
-        <div class="currency-flag" *ngIf="currency.flags.length > 0">
-          <img
-            alt=""
-            style="width: 2rem; height: 1.4rem"
-            [src]="currency.flags[0].flag_url"
-          />
-        </div>
-        <div class="currency-name">{{currency.name}}</div>
-        <div class="currency-code">{{currency.short_code}}</div>
-      </div>
-    </ion-item>
+      <app-currency-item [currency]="currency"> </app-currency-item>
+    </div>
+  </ion-list>
+
+  <ion-list *ngIf="searchTerm > ''">
+    <div
+      *ngFor="let currency of searchedCurrencies$ | async"
+      (click)="selectCurrency(currency)"
+    >
+      <app-currency-item [currency]="currency"> </app-currency-item>
+    </div>
   </ion-list>
 </ion-content>

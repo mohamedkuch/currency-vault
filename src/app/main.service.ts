@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, forkJoin, map } from 'rxjs';
+import { BehaviorSubject, Observable, filter, forkJoin, map } from 'rxjs';
 import { Currency } from './currency';
 import { CurrencyFlag, Flag } from './flag';
 import { CurrencyRates } from './currencyRate';
@@ -21,6 +21,9 @@ export class MainService {
   private currenciesSource = new BehaviorSubject<Currency[]>([]);
   readonly currencies$ = this.currenciesSource.asObservable();
 
+  private flagsSource = new BehaviorSubject<Flag[]>([]);
+  readonly flags$ = this.flagsSource.asObservable();
+
   private selectedTopCurrencySource = new BehaviorSubject<Currency | undefined>(
     undefined
   );
@@ -37,7 +40,10 @@ export class MainService {
   readonly selectedTopValue$ = this.selectedTopValue.asObservable();
   readonly selectedBottomValue$ = this.selectedBottomValue.asObservable();
 
-  public priorityCountries = {
+  private searchTermSource = new BehaviorSubject<string>('');
+  readonly searchTerm$ = this.searchTermSource.asObservable();
+
+  public priorityCountries: { [key: string]: string } = {
     USD: 'US', // United States for US Dollar
     EUR: 'DE', // Germany for Euro
     XCD: 'AG', // Antigua and Barbuda for East Caribbean Dollar
@@ -46,6 +52,15 @@ export class MainService {
     XPF: 'PF', // French Polynesia for CFP Franc
     AUD: 'AU', // Australia for Australian Dollar
     GBP: 'GB', // United Kingdom for British Pound Sterling
+    HRK: 'HR',
+    LTL: 'LT',
+    LVL: 'LV',
+    MRO: 'MR',
+    STD: 'ST',
+    SVC: 'SV',
+    VEF: 'VE',
+    CLF: 'CL',
+    BOV: 'BO',
   };
 
   constructor(private http: HttpClient) {}
@@ -58,6 +73,7 @@ export class MainService {
     forkJoin([currencyRequest, flagsRequest, rateRequest]).subscribe({
       next: ([currencyData, flagsData, rateData]) => {
         this.currencyRateSource.next(rateData);
+        this.flagsSource.next(flagsData);
         let final_Currency = this.processData(currencyData, flagsData);
         this.currenciesSource.next(final_Currency);
         this.setSelectedCurrencies(final_Currency);
@@ -73,11 +89,39 @@ export class MainService {
   processData(currencyData: Currency[], flagData: Flag[]): Currency[] {
     return currencyData.map((currency) => {
       let final = currency;
-      let flagsArray = flagData.filter((flag) =>
-        flag.currencies.find((c) => c.code === currency.short_code)
-      );
+
+      let flagsArray: Flag[] = [];
+
+      // Check if the currency has a priority country
+      const priorityCountryCode = this.priorityCountries[currency.short_code];
+      if (
+        priorityCountryCode &&
+        this.priorityCountries.hasOwnProperty(currency.short_code)
+      ) {
+        // Find the flag for the priority country
+        const priorityFlag = flagData.find(
+          (flag) => flag.cca2 === priorityCountryCode
+        );
+        if (priorityFlag) {
+          flagsArray.push(priorityFlag);
+        }
+      } else {
+        // If no priority country, use the regular method to find flags
+        flagsArray = flagData.filter((flag) => {
+          return flag.currencies.find((c) => c.code === currency.short_code);
+        });
+      }
+
       final.flags = flagsArray;
       return final;
+    });
+  }
+
+  searchCurrencyByFlag(currencyData: Currency[], flagData: Flag[]): Currency[] {
+    return currencyData.filter((currency) => {
+      return flagData.find((flag) =>
+        flag.currencies.find((f) => f.code === currency.short_code)
+      );
     });
   }
 
@@ -106,11 +150,19 @@ export class MainService {
 
   setTopValue(value: string): void {
     this.selectedTopValue.next(value);
-    this.calculateBottomValue()
+    this.calculateBottomValue();
   }
 
   getTopValue(): string {
     return this.selectedTopValue.getValue();
+  }
+
+  setSearchTerm(term: string): void {
+    this.searchTermSource.next(term);
+  }
+
+  getCurrencies(): Currency[] {
+    return this.currenciesSource.getValue();
   }
 
   private setSelectedCurrencies(currencyData: Currency[]): void {
@@ -194,13 +246,17 @@ export class MainService {
                 }
               );
             }
-            return new Flag(
+
+            const result = new Flag(
               flagData.name.official,
               flagData.flags.png.replace('w320', '192x144'),
               flagData.cca2,
               flagData.ccn3,
-              currencyFlags
+              currencyFlags,
+              JSON.stringify(flagData)
             );
+
+            return result;
           });
           return flags;
         }
