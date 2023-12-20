@@ -34,7 +34,7 @@ export class BottomContainerComponent {
     if (currentTopValue.includes('.') && digit === '.') {
       return;
     }
-    if (currentTopValue === '0') {
+    if (currentTopValue === '0' && digit !== '.') {
       result = '';
     }
     if (digit === 'delete') {

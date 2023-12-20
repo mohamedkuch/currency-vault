@@ -4,5 +4,24 @@
     <div style="flex: 1">
       <app-bottom-container></app-bottom-container>
     </div>
+    <div class="footer">
+      <div class="footer-button ion-activatable ripple-parent">
+        <ion-ripple-effect style="border-radius: 10px"></ion-ripple-effect>
+        <ion-icon name="refresh-outline"></ion-icon>
+      </div>
+      <div class="footer-details">
+        <div class="footer-details-rate">{{(selectedRate$ | async)}}</div>
+        <div class="footer-details-date">
+          {{(currencyRate$ | async)?.date | date: 'short'}}
+        </div>
+      </div>
+      <div
+        class="footer-button ion-activatable ripple-parent"
+        (click)="toggleChange()"
+      >
+        <ion-ripple-effect style="border-radius: 10px"></ion-ripple-effect>
+        <ion-icon name="moon-outline"></ion-icon>
+      </div>
+    </div>
   </div>
 </ion-content>

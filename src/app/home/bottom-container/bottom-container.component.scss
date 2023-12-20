@@ -9,6 +9,7 @@
     &-grid {
       flex: 1;
       display: grid;
+      border-top: 0.5px solid var(--ion-color-step-200);
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(4, 1fr);
       grid-column-gap: 0px;
@@ -23,12 +24,13 @@
       position: relative;
       gap: 0.5rem;
       font-size: 1.2rem;
-      padding: 1.5rem;
+      padding: 1.2rem;
       ion-icon {
         font-size: 1.6rem;
       }
 
       &-switch {
+        border-right: 0.5px solid var(--ion-color-step-200);
         color: var(--ion-color-primary);
       }
 

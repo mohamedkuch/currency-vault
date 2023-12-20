@@ -23,7 +23,7 @@
       class="main-bottom-button-wrapper ion-activatable ripple-parent"
       (click)="onButtonClick(item)"
     >
-      <ion-ripple-effect></ion-ripple-effect>
+      <ion-ripple-effect style="border-radius: 1rem;"></ion-ripple-effect>
       <div *ngIf="item !== 'delete'">{{ item }}</div>
       <div *ngIf="item === 'delete'">
         <ion-icon name="backspace-outline"></ion-icon>
