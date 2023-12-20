@@ -6,11 +6,13 @@
     <ion-title>Currencies</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar
-      (ionInput)="handleSearch($event)"
-      [(ngModel)]="searchTerm"
-      class="custom"
-    ></ion-searchbar>
+    <div class="searchBarWrapper">
+      <ion-searchbar
+        (ionInput)="handleSearch($event)"
+        [(ngModel)]="searchTerm"
+        class="custom"
+      ></ion-searchbar>
+    </div>
   </ion-toolbar>
 </ion-header>
 

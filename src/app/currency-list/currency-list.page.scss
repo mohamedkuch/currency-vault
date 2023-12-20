@@ -1,4 +1,23 @@
 ion-searchbar.custom {
   --border-radius: 1rem;
-  margin: 0.5rem 0;
+  margin: 0;
+}
+
+ion-searchbar.ios.custom {
+  margin: 0 !important;
+}
+
+ion-searchbar.md.custom {
+  // margin: 0.5rem 0;
+  --background: var(--ion-color-step-100);
+}
+.ios {
+  .searchBarWrapper {
+    margin: 0.5rem 0;
+  }
+}
+.md {
+  .searchBarWrapper {
+    margin: 0.5rem;
+  }
 }

@@ -3,6 +3,7 @@ import { MainService } from '../main.service';
 import { CurrencyRates } from '../currencyRate';
 import { Observable, combineLatest, filter, map } from 'rxjs';
 import { Currency } from '../currency';
+import { ThemeService } from '../theme.service';
 
 @Component({
   selector: 'app-home',
@@ -16,9 +17,12 @@ export class HomePage implements OnInit {
 
   selectedRate$: Observable<string>;
 
-  themeToggle = false;
+  isDarkMode = true;
 
-  constructor(private mainService: MainService) {
+  constructor(
+    private mainService: MainService,
+    private themeService: ThemeService
+  ) {
     this.currencyRate$ = this.mainService.currencyRate$;
     this.selectedTopCurrency$ = this.mainService.selectedTopCurrency$;
     this.selectedBottomCurrency$ = this.mainService.selectedBottomCurrency$;
@@ -48,33 +52,21 @@ export class HomePage implements OnInit {
         return '';
       })
     );
-    this.currencyRate$.subscribe((data) => {
-      console.log('#### data', data);
-    });
   }
   ngOnInit(): void {
-    // Use matchMedia to check the user preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
-    // Initialize the dark theme based on the initial
-    // value of the prefers-color-scheme media query
-    this.initializeDarkTheme(prefersDark.matches);
-
-    // Listen for changes to the prefers-color-scheme media query
-    prefersDark.addEventListener('change', (mediaQuery) =>
-      this.initializeDarkTheme(mediaQuery.matches)
-    );
+    const isDark = this.themeService.getIsDarkMode() === 'true';
+    this.initializeDarkTheme(isDark);
   }
 
   initializeDarkTheme(isDark: boolean) {
-    this.themeToggle = isDark;
+    this.isDarkMode = isDark;
     this.toggleDarkTheme(isDark);
   }
 
   toggleChange() {
-    this.themeToggle = !this.themeToggle;
-    console.log('##### this.themeToggle', this.themeToggle);
-    this.toggleDarkTheme(this.themeToggle);
+    this.isDarkMode = !this.isDarkMode;
+    this.toggleDarkTheme(this.isDarkMode);
+    this.themeService.setDarkMode(this.isDarkMode);
   }
 
   toggleDarkTheme(shouldAdd: boolean) {

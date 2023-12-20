@@ -20,7 +20,7 @@
         (click)="toggleChange()"
       >
         <ion-ripple-effect style="border-radius: 10px"></ion-ripple-effect>
-        <ion-icon name="moon-outline"></ion-icon>
+        <ion-icon [name]=" isDarkMode ? 'moon': 'moon-outline' "></ion-icon>
       </div>
     </div>
   </div>
