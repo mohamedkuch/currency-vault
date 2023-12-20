@@ -26,4 +26,28 @@ export class BottomContainerComponent {
   onResetClick() {
     this.mainService.resetValues();
   }
+
+  onButtonClick(digit: string) {
+    const currentTopValue = this.mainService.getTopValue() + '';
+    let result = currentTopValue;
+
+    if (currentTopValue.includes('.') && digit === '.') {
+      return;
+    }
+    if (currentTopValue === '0') {
+      result = '';
+    }
+    if (digit === 'delete') {
+      if (currentTopValue.length === 1) {
+        this.mainService.setTopValue('0');
+        return;
+      }
+      this.mainService.setTopValue(
+        result.substring(0, currentTopValue.length - 1)
+      );
+    } else {
+      result += digit;
+      this.mainService.setTopValue(result);
+    }
+  }
 }

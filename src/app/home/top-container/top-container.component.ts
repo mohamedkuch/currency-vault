@@ -13,7 +13,7 @@ export class TopContainerComponent {
   selectedBottomCurrency$ = new Observable<Currency | undefined>();
   selectedTopCurrency$ = new Observable<Currency | undefined>();
 
-  selectedTopValue$ = new Observable<number>();
+  selectedTopValue$ = new Observable<string>();
   selectedBottomValue$ = new Observable<number>();
 
   constructor(private mainService: MainService) {

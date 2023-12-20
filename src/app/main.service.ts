@@ -31,7 +31,7 @@ export class MainService {
   readonly selectedBottomCurrency$ =
     this.selectedBottomCurrencySource.asObservable();
 
-  private selectedTopValue = new BehaviorSubject<number>(1);
+  private selectedTopValue = new BehaviorSubject<string>('1');
   private selectedBottomValue = new BehaviorSubject<number>(0);
 
   readonly selectedTopValue$ = this.selectedTopValue.asObservable();
@@ -82,12 +82,13 @@ export class MainService {
   }
 
   resetValues(): void {
-    this.selectedTopValue.next(0);
+    this.selectedTopValue.next('0');
     this.selectedBottomValue.next(0);
   }
 
   setTopCurrency(currency: Currency): void {
     this.selectedTopCurrencySource.next(currency);
+    this.calculateBottomValue();
   }
 
   getTopCurrency(): Currency | undefined {
@@ -100,6 +101,16 @@ export class MainService {
 
   setBottomCurrency(currency: Currency): void {
     this.selectedBottomCurrencySource.next(currency);
+    this.calculateBottomValue();
+  }
+
+  setTopValue(value: string): void {
+    this.selectedTopValue.next(value);
+    this.calculateBottomValue()
+  }
+
+  getTopValue(): string {
+    return this.selectedTopValue.getValue();
   }
 
   private setSelectedCurrencies(currencyData: Currency[]): void {
@@ -109,15 +120,41 @@ export class MainService {
     this.selectedBottomCurrencySource.next(
       currencyData.find((c) => c.short_code === 'EUR')
     );
+    this.calculateBottomValue();
   }
 
   calculateBottomValue() {
+    const rate = this.currencyRateSource.getValue();
+
     const currentTopCurrency = this.selectedTopCurrencySource.getValue();
     const currentBottomCurrency = this.selectedBottomCurrencySource.getValue();
-    const currentTopValue = this.selectedTopValue.getValue();
-    const currentBottomValue = this.selectedBottomValue.getValue();
+    const currentTopValue = +this.selectedTopValue.getValue();
 
-    if (currentBottomCurrency && currentTopCurrency) {
+    const topRate = rate?.rates
+      .filter((r) => r.code === currentTopCurrency?.short_code)
+      .filter((r) => !!r)
+      .map((r) => r.rate);
+
+    const bottomRate = rate?.rates
+      .filter((r) => r.code === currentBottomCurrency?.short_code)
+      .filter((r) => !!r)
+      .map((r) => r.rate);
+
+    if (currentTopValue === 0) {
+      this.selectedBottomValue.next(0);
+    }
+
+    if (
+      currentBottomCurrency &&
+      currentTopCurrency &&
+      topRate &&
+      topRate.length === 1 &&
+      bottomRate &&
+      bottomRate.length === 1
+    ) {
+      this.selectedBottomValue.next(
+        +((1 / topRate[0]) * bottomRate[0] * currentTopValue).toFixed(2)
+      );
     }
   }
 

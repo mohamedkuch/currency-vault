@@ -21,6 +21,7 @@
     <div
       *ngFor="let item of buttons"
       class="main-bottom-button-wrapper ion-activatable ripple-parent"
+      (click)="onButtonClick(item)"
     >
       <ion-ripple-effect></ion-ripple-effect>
       <div *ngIf="item !== 'delete'">{{ item }}</div>
