@@ -7,7 +7,7 @@
     [queryParams]="{ selected: 'top' }"
   >
     <div class="main-card-curr-flag-wrapper">
-      <div style="font-weight: 600; letter-spacing: 1px">
+      <div style="font-weight: 800; ">
         {{ selectedTopCurrency.short_code }}({{ selectedTopCurrency.symbol }})
       </div>
       <div>
@@ -35,7 +35,7 @@
     *ngIf="selectedBottomCurrency$ | async as selectedBottomCurrency"
   >
     <div class="main-card-curr-flag-wrapper">
-      <div style="font-weight: 600; letter-spacing: 1px">
+      <div style="font-weight: 800; ">
         {{ selectedBottomCurrency.short_code }}({{
           selectedBottomCurrency.symbol
         }})

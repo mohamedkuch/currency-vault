@@ -9,7 +9,6 @@
     &-grid {
       flex: 1;
       display: grid;
-      border-top: 0.5px solid var(--ion-color-step-200);
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(4, 1fr);
       grid-column-gap: 0px;
@@ -17,25 +16,30 @@
     }
 
     &-icon {
-      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       gap: 0.5rem;
       font-size: 1.2rem;
-      padding: 1.2rem;
+      max-width: 14rem;
+      overflow: hidden;
+      border-radius: 2rem;
+      padding: 1rem;
+      width: 40%;
+      max-width: 12rem;
       ion-icon {
         font-size: 1.6rem;
       }
 
       &-switch {
-        border-right: 0.5px solid var(--ion-color-step-200);
         color: var(--ion-color-primary);
+        border: 1px solid;
       }
 
       &-danger {
         color: var(--ion-color-danger);
+        border: 1px solid;
       }
 
       &-wrapper {
@@ -51,7 +55,8 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      font-size: 2rem;
+      font-size: 1.6rem;
+      border-bottom: 0.5px solid var(--ion-color-step-200);
 
       ion-icon {
         font-size: 2rem;
